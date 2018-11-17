@@ -3,12 +3,14 @@ package com.FilmStoreAPI.dao;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.FilmStoreAPI.entity.City;
 import com.FilmStoreAPI.entity.Country;
 
 @Repository
@@ -24,6 +26,19 @@ public class FilmStoreDAOImpl implements FilmStoreDAO
 		Session currentSession = sessionFactory.getCurrentSession();
 		Query<Country> theQuery = currentSession.createQuery("from Country order by countryName", Country.class);
 		List<Country> countries = theQuery.getResultList();
+		for(Country tempCountry : countries)
+		{
+			System.out.println("Country Name "+tempCountry.getCountryName());
+			System.out.println("Country ID "+tempCountry.getCountryId());
+			//Query<City> theQuery1 = currentSession.createQuery("from City c where c.cityCountry = :theCountry", City.class).setParameter("theCountry", tempCountry);
+			//List<City> cities = theQuery1.getResultList();
+			//System.out.println("Cities "+cities);
+			
+			//Hibernate.initialize(tempCountry.getCities());
+			//System.out.println("Country Name "+tempCountry.getCountryName());
+			//System.out.println(tempCountry.getCities());
+			//System.out.println(tempCountry);
+		}
 		return countries;
 		
 	}
@@ -32,6 +47,8 @@ public class FilmStoreDAOImpl implements FilmStoreDAO
 	public Country getCountry(Integer theCountryId) {
 		Session currentSession = sessionFactory.getCurrentSession();
 		Country theCountry = currentSession.get(Country.class, theCountryId);
+		System.out.println(theCountry);
+		//System.out.println(theCountry.getCities());
 		return theCountry;
 	}
 
@@ -54,9 +71,55 @@ public class FilmStoreDAOImpl implements FilmStoreDAO
 	@Override
 	public void deleteCountry(Integer theCountryId) {
 		Session currentSession = sessionFactory.getCurrentSession();
-		Query theQuery = currentSession.createQuery("delete from Country where countryId=:theCountryId");
+		Query theQuery = currentSession.createQuery("delete from Country where countryId = :theCountryId");
 		theQuery.setParameter("theCountryId", theCountryId);		
 		theQuery.executeUpdate();
+	}
+
+	@Override
+	public List<City> getCities() {
+		Session currentSession = sessionFactory.getCurrentSession();
+		Query<City> theQuery = currentSession.createQuery("from City ",City.class);
+		List<City> cities = theQuery.getResultList();
+		return cities;
+	}
+
+	@Override
+	public City getCity(Integer theCityId) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		City theCity = currentSession.get(City.class, theCityId);
+		return theCity;
+	}
+
+	@Override
+	public void addCity(City theCity) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		theCity.setCityLastUpdate(new Date());
+		currentSession.saveOrUpdate(theCity);
+	}
+
+	@Override
+	public boolean isCityAlreadyExistedInCountry(String theCityName, Country theCountry) {
+		boolean cityStatus = false;
+		Session currentSession = sessionFactory.getCurrentSession();
+		Query<City> theQuery = currentSession.createQuery("from City where cityName = :aCityName and cityCountry = :aCountry");
+		theQuery.setParameter("aCityName", theCityName);
+		theQuery.setParameter("aCountry", theCountry);
+		List<City> tempCities = theQuery.getResultList();
+		if(tempCities.size() > 0) 
+		{
+			cityStatus = true;
+		}
+		return cityStatus;
+	}
+
+	@Override
+	public void deleteCity(Integer theCityId) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		Query theQuery = currentSession.createQuery("delete from City where cityId = :aCityId");
+		theQuery.setParameter("aCityId", theCityId);		
+		theQuery.executeUpdate();
+		
 	}
 
 }

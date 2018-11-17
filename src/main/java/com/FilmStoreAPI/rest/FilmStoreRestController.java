@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.FilmStoreAPI.entity.City;
 import com.FilmStoreAPI.entity.Country;
+import com.FilmStoreAPI.error.EntityAlreadyExistedException;
 import com.FilmStoreAPI.error.EntityNotFoundException;
 import com.FilmStoreAPI.service.FilmStoreService;
 
@@ -60,7 +62,6 @@ public class FilmStoreRestController
 		{
 			throw new EntityNotFoundException("Country with name "+theCountry.getCountryName()+" already exist");
 		}
-		//theCountry.setCountryId(0);
 		filmStoreService.addCountry(theCountry);
 		return theCountry;
 	}
@@ -76,14 +77,69 @@ public class FilmStoreRestController
 	//add the mapping to DELETE /countries/{theCountryId} - detele a Country
 	@DeleteMapping("/countries/{theCountryId}")
 	public String deleteCountry(@PathVariable Integer theCountryId)
+	{
+		Country theCountry = filmStoreService.getCountry(theCountryId);
+		if(theCountry == null)
 		{
-			Country theCountry = filmStoreService.getCountry(theCountryId);
-			if(theCountry == null)
-			{
-				throw new EntityNotFoundException("the Country Id:"+theCountryId+" not Found");
-			}
-			filmStoreService.deleteCountry(theCountryId);
-			return "Deleted Country id:"+theCountryId;
+			throw new EntityNotFoundException("the Country Id:"+theCountryId+" not Found");
 		}
+		filmStoreService.deleteCountry(theCountryId);
+		return "Deleted Country id:"+theCountryId;
+	}
+	
+	
+	//add the mapping for GET /cities - get List of cities
+	@GetMapping("/cities")
+	public List<City> getCities()
+	{
+		return filmStoreService.getCities();
+	}
+	
+	//add mapping for GET  /cities/{theCityId} - get a single city
+	@GetMapping("/cities/{theCityId}")
+	public City getCity(@PathVariable Integer theCityId)
+	{		
+	    City theCity = filmStoreService.getCity(theCityId);
+	    if(theCity == null)
+	    {
+	    	throw new EntityNotFoundException("No City with ID: "+theCityId);
+	    }
+		return filmStoreService.getCity(theCityId);
+	}
+	
+	//add mapping  for POST /cities - create a new city
+	@PostMapping("/cities")
+	public City addCity(@RequestBody City theCity)
+	{
+		if(isCityAlreadyExistedInCountry(theCity.getCityName(),theCity.getCityCountry()))
+		{
+			throw new EntityAlreadyExistedException("City "+theCity.getCityName()+" already existed in country "+theCity.getCityCountry().getCountryName());
+		}
+		filmStoreService.addCity(theCity);
+		return theCity;
+	}
+
+	
+	private boolean isCityAlreadyExistedInCountry(String theCityName, Country theCountry) {
+		return filmStoreService.isCityAlreadyExistedInCountry(theCityName,theCountry);
+	}
+	
+	//add the mapping to PUT /cities - update a city
+	@PutMapping("/cities")
+	public City updateCity(@RequestBody City theCity)
+	{	
+		filmStoreService.addCity(theCity);
+		return theCity;
+	}
+	
+	//add mapping for DELETE /cities/{theCityId} - delete a city
+	@DeleteMapping("/cities/{theCityId}")
+	public String deleteCity(@PathVariable Integer theCityId)
+	{
+		filmStoreService.deleteCity(theCityId);
+		 return "Deleted City id:"+theCityId;
+	}
+	
+	
 	
 }
