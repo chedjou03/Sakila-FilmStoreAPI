@@ -10,9 +10,9 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.FilmStoreAPI.entity.Address;
-import com.FilmStoreAPI.entity.City;
-import com.FilmStoreAPI.entity.Country;
+import com.FilmStoreAPI.CustomerData.entity.Address;
+import com.FilmStoreAPI.CustomerData.entity.City;
+import com.FilmStoreAPI.CustomerData.entity.Country;
 
 @Repository
 public class FilmStoreDAOImpl implements FilmStoreDAO 

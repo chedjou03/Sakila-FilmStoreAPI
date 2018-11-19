@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.FilmStoreAPI.CustomerData.entity.Address;
+import com.FilmStoreAPI.CustomerData.entity.City;
+import com.FilmStoreAPI.CustomerData.entity.Country;
 import com.FilmStoreAPI.dao.FilmStoreDAO;
-import com.FilmStoreAPI.entity.Address;
-import com.FilmStoreAPI.entity.City;
-import com.FilmStoreAPI.entity.Country;
 
 @Service
 public class FilmStoreServiceImpl implements FilmStoreService 

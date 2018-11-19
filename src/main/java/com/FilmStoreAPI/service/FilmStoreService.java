@@ -2,9 +2,9 @@ package com.FilmStoreAPI.service;
 
 import java.util.List;
 
-import com.FilmStoreAPI.entity.Address;
-import com.FilmStoreAPI.entity.City;
-import com.FilmStoreAPI.entity.Country;
+import com.FilmStoreAPI.CustomerData.entity.Address;
+import com.FilmStoreAPI.CustomerData.entity.City;
+import com.FilmStoreAPI.CustomerData.entity.Country;
 
 public interface FilmStoreService {
 

@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.FilmStoreAPI.entity.Address;
-import com.FilmStoreAPI.entity.City;
-import com.FilmStoreAPI.entity.Country;
+import com.FilmStoreAPI.CustomerData.entity.Address;
+import com.FilmStoreAPI.CustomerData.entity.City;
+import com.FilmStoreAPI.CustomerData.entity.Country;
 import com.FilmStoreAPI.error.EntityAlreadyExistedException;
 import com.FilmStoreAPI.error.EntityNotFoundException;
 import com.FilmStoreAPI.service.FilmStoreService;
