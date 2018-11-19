@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.FilmStoreAPI.entity.Address;
 import com.FilmStoreAPI.entity.City;
 import com.FilmStoreAPI.entity.Country;
 import com.FilmStoreAPI.error.EntityAlreadyExistedException;
@@ -88,6 +89,7 @@ public class FilmStoreRestController
 	}
 	
 	
+	
 	//add the mapping for GET /cities - get List of cities
 	@GetMapping("/cities")
 	public List<City> getCities()
@@ -104,7 +106,7 @@ public class FilmStoreRestController
 	    {
 	    	throw new EntityNotFoundException("No City with ID: "+theCityId);
 	    }
-		return filmStoreService.getCity(theCityId);
+		return theCity;
 	}
 	
 	//add mapping  for POST /cities - create a new city
@@ -137,9 +139,79 @@ public class FilmStoreRestController
 	public String deleteCity(@PathVariable Integer theCityId)
 	{
 		filmStoreService.deleteCity(theCityId);
-		 return "Deleted City id:"+theCityId;
+		return "Deleted City id:"+theCityId;
 	}
 	
+	//add mapping for GET /citiesOfCountry/{theCountryId}
+	@GetMapping("/citiesOfCountry/{theCountryId}")
+	public List<City> getCitiesOfCountry(@PathVariable Integer theCountryId)
+	{
+		Country theCountry = filmStoreService.getCountry(theCountryId);
+		if(theCountry == null)
+		{
+			throw new EntityNotFoundException("NO Country with Id: "+theCountryId);
+		}
+		return filmStoreService.getCitiesOfCountry(theCountry);
+	}
 	
+	//add mapping for GET /addresses - get all the address
+	@GetMapping("/addresses")
+	public List<Address> getAddresses()
+	{
+		return filmStoreService.getAddresses();
+	}
 	
+	//add mapping for GET /addresses/{theAddressId} - get  single address
+	@GetMapping("/addresses/{theAddressId}")
+	public Address getAddress(@PathVariable Integer theAddressId)
+	{
+		Address theAddress = filmStoreService.getAddress(theAddressId);
+		if(theAddress == null)
+		{
+			throw new EntityNotFoundException("No Address with Id: "+theAddressId);
+		}
+		return theAddress;
+	}
+	
+	//add mapping for GET /addressesOfCity/{theCityId} - get list of address of a city
+	@GetMapping("/addressesOfCity/{theCityId}")
+	public List<Address> getAddressesOfCity(@PathVariable Integer theCityId)
+	{
+		City theCity = getCity(theCityId);
+		if(theCity == null)
+		{
+			throw new EntityNotFoundException("No City with ID: "+theCityId);
+		}
+		List<Address> addresses = filmStoreService.getAddressesOfCity(theCity);
+		return addresses;	
+	}
+	
+	//add mapping for POST /addresses - create  a new address
+	@PostMapping("/addresses")
+	public Address addAddress(@RequestBody Address theAddress)
+	{
+		filmStoreService.addAddress(theAddress);
+		return theAddress;
+	}
+	
+	//add mapping for PUT /addresses - update an address
+	@PutMapping("/addresses")
+	public Address updateAddress(@RequestBody Address theAddress)
+	{
+		filmStoreService.addAddress(theAddress);
+		return theAddress;
+	}
+	
+	//add mapping for DELETE /addresses/{theAddressId} - delete an address
+	@DeleteMapping("/addresses/{theAddressId}")
+	public String deleteAddress(@PathVariable Integer theAddressId)
+	{
+		Address theAddress = filmStoreService.getAddress(theAddressId);
+		if(theAddress == null)
+		{
+			throw new EntityNotFoundException("No Address with Id: "+theAddressId);
+		}
+		filmStoreService.deleteAddress(theAddressId);
+		return "Deleted Address id:"+theAddressId;
+	}
 }

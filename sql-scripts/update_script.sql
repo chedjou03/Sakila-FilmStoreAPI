@@ -1,0 +1,1 @@
+ALTER TABLE sakila.address DROP COLUMN location;

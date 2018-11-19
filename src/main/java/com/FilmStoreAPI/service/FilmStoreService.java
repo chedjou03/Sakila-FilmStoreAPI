@@ -2,6 +2,7 @@ package com.FilmStoreAPI.service;
 
 import java.util.List;
 
+import com.FilmStoreAPI.entity.Address;
 import com.FilmStoreAPI.entity.City;
 import com.FilmStoreAPI.entity.Country;
 
@@ -26,5 +27,17 @@ public interface FilmStoreService {
 	boolean isCityAlreadyExistedInCountry(String theCityName, Country theCountry);
 
 	void deleteCity(Integer theCityId);
+
+	List<Address> getAddresses();
+
+	Address getAddress(Integer theAddressId);
+
+	List<City> getCitiesOfCountry(Country theCountry);
+
+	List<Address> getAddressesOfCity(City theCity);
+
+	void addAddress(Address theAddress);
+
+	void deleteAddress(Integer theAddressId);
 
 }

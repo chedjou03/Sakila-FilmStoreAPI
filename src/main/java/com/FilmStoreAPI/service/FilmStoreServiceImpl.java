@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.FilmStoreAPI.dao.FilmStoreDAO;
+import com.FilmStoreAPI.entity.Address;
 import com.FilmStoreAPI.entity.City;
 import com.FilmStoreAPI.entity.Country;
 
@@ -82,6 +83,43 @@ public class FilmStoreServiceImpl implements FilmStoreService
 	@Transactional
 	public void deleteCity(Integer theCityId) {
 		filmStoreDAO.deleteCity(theCityId);
+	}
+
+	@Override
+	@Transactional
+	public List<Address> getAddresses() {
+		return filmStoreDAO.getAddresses();
+	}
+
+	@Override
+	@Transactional
+	public Address getAddress(Integer theAddressId) {
+		return filmStoreDAO.getAddress(theAddressId);
+	}
+
+	@Override
+	@Transactional
+	public List<City> getCitiesOfCountry(Country theCountry) {
+		return filmStoreDAO.getCitiesOfCountry(theCountry);
+	}
+
+	@Override
+	@Transactional
+	public List<Address> getAddressesOfCity(City theCity) {
+		return filmStoreDAO.getAddressesOfCity(theCity);
+	}
+
+	@Override
+	@Transactional
+	public void addAddress(Address theAddress) {
+		filmStoreDAO.addAddress(theAddress);
+		
+	}
+
+	@Override
+	@Transactional
+	public void deleteAddress(Integer theAddressId) {
+		filmStoreDAO.deleteAddress(theAddressId);	
 	}
 
 }
