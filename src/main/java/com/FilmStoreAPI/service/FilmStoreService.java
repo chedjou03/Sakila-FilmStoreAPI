@@ -2,9 +2,10 @@ package com.FilmStoreAPI.service;
 
 import java.util.List;
 
-import com.FilmStoreAPI.CustomerData.entity.Address;
-import com.FilmStoreAPI.CustomerData.entity.City;
-import com.FilmStoreAPI.CustomerData.entity.Country;
+import com.FilmStoreAPI.Entity.CustomerData.Address;
+import com.FilmStoreAPI.Entity.CustomerData.City;
+import com.FilmStoreAPI.Entity.CustomerData.Country;
+import com.FilmStoreAPI.Entity.Inventory.Actor;
 
 public interface FilmStoreService {
 
@@ -39,5 +40,15 @@ public interface FilmStoreService {
 	void addAddress(Address theAddress);
 
 	void deleteAddress(Integer theAddressId);
+
+	List<Actor> getActors();
+
+	Actor getActor(Integer theActorId);
+
+	boolean actorWithLastNameAndFirstNameAlreadyExisted(String actorFirstName, String actorLastName);
+
+	void addActor(Actor theActor);
+
+	void deleteActor(Integer theActorId);
 
 }

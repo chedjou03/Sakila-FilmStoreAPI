@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.FilmStoreAPI.CustomerData.entity.Address;
-import com.FilmStoreAPI.CustomerData.entity.City;
-import com.FilmStoreAPI.CustomerData.entity.Country;
+import com.FilmStoreAPI.Entity.CustomerData.Address;
+import com.FilmStoreAPI.Entity.CustomerData.City;
+import com.FilmStoreAPI.Entity.CustomerData.Country;
+import com.FilmStoreAPI.Entity.Inventory.Actor;
 import com.FilmStoreAPI.error.EntityAlreadyExistedException;
 import com.FilmStoreAPI.error.EntityNotFoundException;
 import com.FilmStoreAPI.service.FilmStoreService;
@@ -214,4 +215,57 @@ public class FilmStoreRestController
 		filmStoreService.deleteAddress(theAddressId);
 		return "Deleted Address id:"+theAddressId;
 	}
+	
+	//add mapping for GET /actors - get all the actors
+	@GetMapping("/actors")
+	public List<Actor> getActors()
+	{			
+		return filmStoreService.getActors();
+	}
+	
+	//add mapping for GET  /actors/{theActorId} - get a single Actor
+	@GetMapping("/actors/{theActorId}")
+	public Actor getActor(@PathVariable Integer theActorId)
+	{		
+		Actor theActor = filmStoreService.getActor(theActorId);
+		if(theActor == null)
+		{
+		   	throw new EntityNotFoundException("No Actor with ID: "+theActorId);
+	    }
+		return theActor;
+	}
+	
+	//add the mapping for POST /actors - create a new Actor 
+	@PostMapping("/actors")
+	public Actor addActor(@RequestBody Actor theActor)
+	{	
+		if(actorWithLastNameAndFirstNameAlreadyExisted(theActor.getActorFirstName(),theActor.getActorLastName()))
+		{
+			throw new EntityNotFoundException("Actor with name "+theActor.getActorFirstName()+" "+theActor.getActorLastName()+" already exist");
+		}
+		filmStoreService.addActor(theActor);
+		return theActor;
+	}
+
+	//tell us if an actor with actorFirstName and actorLastName alreafy existed
+	private boolean actorWithLastNameAndFirstNameAlreadyExisted(String actorFirstName, String actorLastName) {
+		return filmStoreService.actorWithLastNameAndFirstNameAlreadyExisted( actorFirstName,  actorLastName);
+	}
+	
+	//add the mapping for PUT /actors - update an actor
+	@PutMapping("/actors")
+	public Actor updateActor(@RequestBody Actor theActor)
+	{
+		filmStoreService.addActor(theActor);
+		return theActor;
+	}
+	
+	//add the mapping for DELETE /actors/{theActorId} - delete an actor
+	@DeleteMapping("/actors/{theActorId}")
+	public String deleteActor(@PathVariable Integer theActorId)
+	{
+		filmStoreService.deleteActor(theActorId);
+		return "Deleted Actor id:"+theActorId;
+	}
+	
 }

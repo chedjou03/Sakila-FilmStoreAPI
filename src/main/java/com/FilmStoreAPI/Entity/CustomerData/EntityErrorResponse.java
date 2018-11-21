@@ -1,4 +1,4 @@
-package com.FilmStoreAPI.CustomerData.entity;
+package com.FilmStoreAPI.Entity.CustomerData;
 
 public class EntityErrorResponse 
 {

@@ -6,9 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.FilmStoreAPI.CustomerData.entity.Address;
-import com.FilmStoreAPI.CustomerData.entity.City;
-import com.FilmStoreAPI.CustomerData.entity.Country;
+import com.FilmStoreAPI.Entity.CustomerData.Address;
+import com.FilmStoreAPI.Entity.CustomerData.City;
+import com.FilmStoreAPI.Entity.CustomerData.Country;
+import com.FilmStoreAPI.Entity.Inventory.Actor;
 import com.FilmStoreAPI.dao.FilmStoreDAO;
 
 @Service
@@ -22,9 +23,6 @@ public class FilmStoreServiceImpl implements FilmStoreService
 	@Transactional
 	public List<Country> getCountries() 
 	{	
-		//List<Country> theCountries = filmStoreDAO.getCountries();
-		
-				//Hibernate.initialize(supplier.getIngredients());
 		return filmStoreDAO.getCountries();
 	}
 
@@ -120,6 +118,36 @@ public class FilmStoreServiceImpl implements FilmStoreService
 	@Transactional
 	public void deleteAddress(Integer theAddressId) {
 		filmStoreDAO.deleteAddress(theAddressId);	
+	}
+
+	@Override
+	@Transactional
+	public List<Actor> getActors() {
+		return filmStoreDAO.getActors();
+	}
+
+	@Override
+	@Transactional
+	public Actor getActor(Integer theActorId) {
+		return filmStoreDAO.getActor(theActorId);
+	}
+
+	@Override
+	@Transactional
+	public boolean actorWithLastNameAndFirstNameAlreadyExisted(String actorFirstName, String actorLastName) {
+		return filmStoreDAO.actorWithLastNameAndFirstNameAlreadyExisted( actorFirstName,  actorLastName);
+	}
+
+	@Override
+	@Transactional
+	public void addActor(Actor theActor) {
+		filmStoreDAO.addActor(theActor);
+	}
+
+	@Override
+	@Transactional
+	public void deleteActor(Integer theActorId) {
+		filmStoreDAO.deleteActor(theActorId);	
 	}
 
 }

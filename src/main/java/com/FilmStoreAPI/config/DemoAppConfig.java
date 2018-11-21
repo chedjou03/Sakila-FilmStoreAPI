@@ -123,9 +123,11 @@ public class DemoAppConfig implements WebMvcConfigurer {
 		return txManager;
 	}	
 	
-	
+	@Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+    }
 
-   
 }
 
 

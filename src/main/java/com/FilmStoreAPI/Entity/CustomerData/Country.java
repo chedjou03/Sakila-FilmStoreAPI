@@ -1,4 +1,4 @@
-package com.FilmStoreAPI.CustomerData.entity;
+package com.FilmStoreAPI.Entity.CustomerData;
 
 import java.util.ArrayList;
 import java.util.Date;

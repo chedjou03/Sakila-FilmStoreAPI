@@ -10,9 +10,10 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.FilmStoreAPI.CustomerData.entity.Address;
-import com.FilmStoreAPI.CustomerData.entity.City;
-import com.FilmStoreAPI.CustomerData.entity.Country;
+import com.FilmStoreAPI.Entity.CustomerData.Address;
+import com.FilmStoreAPI.Entity.CustomerData.City;
+import com.FilmStoreAPI.Entity.CustomerData.Country;
+import com.FilmStoreAPI.Entity.Inventory.Actor;
 
 @Repository
 public class FilmStoreDAOImpl implements FilmStoreDAO 
@@ -152,6 +153,52 @@ public class FilmStoreDAOImpl implements FilmStoreDAO
 		Session currentSession = sessionFactory.getCurrentSession();
 		Query theQuery = currentSession.createQuery("delete from Address where addressId = :aAddressId");
 		theQuery.setParameter("aAddressId", theAddressId);		
+		theQuery.executeUpdate();
+	}
+
+	@Override
+	public List<Actor> getActors() {
+		Session currentSession = sessionFactory.getCurrentSession();
+		Query<Actor> theQuery = currentSession.createQuery("from Actor", Actor.class);
+		List<Actor> actors = theQuery.getResultList();
+		return actors;
+	}
+
+	@Override
+	public Actor getActor(Integer theActorId) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		Actor theActor = currentSession.get(Actor.class, theActorId);
+		return theActor;
+	}
+
+	@Override
+	public boolean actorWithLastNameAndFirstNameAlreadyExisted(String actorFirstName, String actorLastName) {
+		Long count = new Long(0);
+		Session currentSession = sessionFactory.getCurrentSession();
+		count =  (Long)currentSession.createQuery("select count(*) from Actor where actorFirstName = :aActorFirstName and actorLastName = :aActorLastName").
+									  setParameter("aActorFirstName", actorFirstName).
+									  setParameter("aActorLastName", actorLastName).
+									  uniqueResult();
+		System.out.println("Actor with this names count: "+count);
+		if(count > 0)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void addActor(Actor theActor) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		theActor.setActorLastUpdate(new Date());
+		currentSession.saveOrUpdate(theActor);
+	}
+
+	@Override
+	public void deleteActor(Integer theActorId) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		Query theQuery = currentSession.createQuery("delete from Actor where actorId = :aActorId");
+		theQuery.setParameter("aActorId", theActorId);		
 		theQuery.executeUpdate();
 	}
 
