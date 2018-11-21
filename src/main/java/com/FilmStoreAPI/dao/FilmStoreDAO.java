@@ -6,6 +6,7 @@ import com.FilmStoreAPI.Entity.CustomerData.Address;
 import com.FilmStoreAPI.Entity.CustomerData.City;
 import com.FilmStoreAPI.Entity.CustomerData.Country;
 import com.FilmStoreAPI.Entity.Inventory.Actor;
+import com.FilmStoreAPI.Entity.Inventory.Category;
 
 public interface FilmStoreDAO 
 {
@@ -51,5 +52,15 @@ public interface FilmStoreDAO
 	void addActor(Actor theActor);
 
 	void deleteActor(Integer theActorId);
+
+	List<Category> getCategories();
+
+	Category getCategory(Integer theCategoryId);
+
+	boolean isCategoryWithThisNameAlreadyExisted(String theCategoryName);
+
+	void addCategory(Category theCategory);
+
+	void deleteCategory(Integer theCategoryId);
 
 }

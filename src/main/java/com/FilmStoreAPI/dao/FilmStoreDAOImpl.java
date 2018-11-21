@@ -14,6 +14,7 @@ import com.FilmStoreAPI.Entity.CustomerData.Address;
 import com.FilmStoreAPI.Entity.CustomerData.City;
 import com.FilmStoreAPI.Entity.CustomerData.Country;
 import com.FilmStoreAPI.Entity.Inventory.Actor;
+import com.FilmStoreAPI.Entity.Inventory.Category;
 
 @Repository
 public class FilmStoreDAOImpl implements FilmStoreDAO 
@@ -179,7 +180,6 @@ public class FilmStoreDAOImpl implements FilmStoreDAO
 									  setParameter("aActorFirstName", actorFirstName).
 									  setParameter("aActorLastName", actorLastName).
 									  uniqueResult();
-		System.out.println("Actor with this names count: "+count);
 		if(count > 0)
 		{
 			return true;
@@ -199,6 +199,50 @@ public class FilmStoreDAOImpl implements FilmStoreDAO
 		Session currentSession = sessionFactory.getCurrentSession();
 		Query theQuery = currentSession.createQuery("delete from Actor where actorId = :aActorId");
 		theQuery.setParameter("aActorId", theActorId);		
+		theQuery.executeUpdate();
+	}
+
+	@Override
+	public List<Category> getCategories() {
+		Session currentSession = sessionFactory.getCurrentSession();
+		Query<Category> theQuery = currentSession.createQuery("from Category", Category.class);
+		List<Category> categories = theQuery.getResultList();
+		return categories;
+	}
+
+	@Override
+	public Category getCategory(Integer theCategoryId) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		Category theCategory = currentSession.get(Category.class, theCategoryId);
+		return theCategory;
+	}
+
+	@Override
+	public boolean isCategoryWithThisNameAlreadyExisted(String theCategoryName) {
+		Long count = new Long(0);
+		Session currentSession = sessionFactory.getCurrentSession();
+		count =  (Long)currentSession.createQuery("select count(*) from Category where categoryName = :aCategoryName").
+									  setParameter("aCategoryName", theCategoryName).
+									  uniqueResult();
+		if(count > 0)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void addCategory(Category theCategory) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		theCategory.setCategoryLastUpdate(new Date());
+		currentSession.saveOrUpdate(theCategory);
+	}
+
+	@Override
+	public void deleteCategory(Integer theCategoryId) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		Query theQuery = currentSession.createQuery("delete from Category where categoryId = :aCategoryId");
+		theQuery.setParameter("aCategoryId", theCategoryId);		
 		theQuery.executeUpdate();
 	}
 

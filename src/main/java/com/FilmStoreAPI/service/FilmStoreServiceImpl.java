@@ -10,6 +10,7 @@ import com.FilmStoreAPI.Entity.CustomerData.Address;
 import com.FilmStoreAPI.Entity.CustomerData.City;
 import com.FilmStoreAPI.Entity.CustomerData.Country;
 import com.FilmStoreAPI.Entity.Inventory.Actor;
+import com.FilmStoreAPI.Entity.Inventory.Category;
 import com.FilmStoreAPI.dao.FilmStoreDAO;
 
 @Service
@@ -148,6 +149,36 @@ public class FilmStoreServiceImpl implements FilmStoreService
 	@Transactional
 	public void deleteActor(Integer theActorId) {
 		filmStoreDAO.deleteActor(theActorId);	
+	}
+
+	@Override
+	@Transactional
+	public List<Category> getCategories() {
+		return filmStoreDAO.getCategories();
+	}
+
+	@Override
+	@Transactional
+	public Category getCategory(Integer theCategoryId) {
+		return filmStoreDAO.getCategory(theCategoryId);
+	}
+
+	@Override
+	@Transactional
+	public void addCategory(Category theCategory) {
+		filmStoreDAO.addCategory(theCategory);
+	}
+
+	@Override
+	@Transactional
+	public boolean isCategoryWithThisNameAlreadyExisted(String theCategoryName) {
+		return filmStoreDAO.isCategoryWithThisNameAlreadyExisted(theCategoryName);
+	}
+
+	@Override
+	@Transactional
+	public void deleteCategory(Integer theCategoryId) {
+		filmStoreDAO.deleteCategory(theCategoryId);	
 	}
 
 }

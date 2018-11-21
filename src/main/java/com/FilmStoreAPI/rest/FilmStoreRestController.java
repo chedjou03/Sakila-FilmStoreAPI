@@ -16,6 +16,7 @@ import com.FilmStoreAPI.Entity.CustomerData.Address;
 import com.FilmStoreAPI.Entity.CustomerData.City;
 import com.FilmStoreAPI.Entity.CustomerData.Country;
 import com.FilmStoreAPI.Entity.Inventory.Actor;
+import com.FilmStoreAPI.Entity.Inventory.Category;
 import com.FilmStoreAPI.error.EntityAlreadyExistedException;
 import com.FilmStoreAPI.error.EntityNotFoundException;
 import com.FilmStoreAPI.service.FilmStoreService;
@@ -266,6 +267,57 @@ public class FilmStoreRestController
 	{
 		filmStoreService.deleteActor(theActorId);
 		return "Deleted Actor id:"+theActorId;
+	}
+	
+	//add mapping for GET /categories - get all the categories
+	@GetMapping("/categories")
+	public List<Category> getCategories()
+	{			
+		return filmStoreService.getCategories();
+	}
+	
+	//add mapping for GET  /categories/{theCategoriesId} - get a single category
+	@GetMapping("/categories/{theCategoryId}")
+	public Category getCategory(@PathVariable Integer theCategoryId)
+	{		
+		Category theCategory = filmStoreService.getCategory(theCategoryId);
+		if(theCategory == null)
+		{
+			 throw new EntityNotFoundException("No Category with ID: "+theCategoryId);
+		}
+		return theCategory;
+	}
+	
+	//add the mapping for POST /categories - create a new categories 
+	@PostMapping("/categories")
+	public Category addCategory(@RequestBody Category theCategory)
+	{	
+		if(isCategoryWithThisNameAlreadyExisted(theCategory.getCategoryName()))
+		{
+			throw new EntityNotFoundException("Category with name "+theCategory.getCategoryName()+" already exist");
+		}
+		filmStoreService.addCategory(theCategory);
+		return theCategory;
+	}
+
+	private boolean isCategoryWithThisNameAlreadyExisted(String theCategoryName) {
+		return filmStoreService.isCategoryWithThisNameAlreadyExisted(theCategoryName);
+	}
+	
+	//add the mapping for PUT /categories - update a category
+	@PutMapping("/categories")
+	public Category updateCategory(@RequestBody Category theCategory)
+	{
+		filmStoreService.addCategory(theCategory);
+		return theCategory;
+	}
+	
+	//add the mapping for DELETE /categories/{theCategoriesId} - delete a category
+	@DeleteMapping("/categories/{theCategoryId}")
+	public String deleteCategory(@PathVariable Integer theCategoryId)
+	{
+		filmStoreService.deleteCategory(theCategoryId);
+		return "Deleted Categeory id:"+theCategoryId;
 	}
 	
 }
