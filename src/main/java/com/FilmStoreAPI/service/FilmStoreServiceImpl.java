@@ -11,6 +11,7 @@ import com.FilmStoreAPI.Entity.CustomerData.City;
 import com.FilmStoreAPI.Entity.CustomerData.Country;
 import com.FilmStoreAPI.Entity.Inventory.Actor;
 import com.FilmStoreAPI.Entity.Inventory.Category;
+import com.FilmStoreAPI.Entity.Inventory.Language;
 import com.FilmStoreAPI.dao.FilmStoreDAO;
 
 @Service
@@ -179,6 +180,37 @@ public class FilmStoreServiceImpl implements FilmStoreService
 	@Transactional
 	public void deleteCategory(Integer theCategoryId) {
 		filmStoreDAO.deleteCategory(theCategoryId);	
+	}
+
+	@Override
+	@Transactional
+	public List<Language> getLanguages() {
+		return filmStoreDAO.getLanguages();
+	}
+
+	@Override
+	@Transactional
+	public Language getLanguage(Integer theLanguageId) {
+		return filmStoreDAO.getLanguage(theLanguageId);
+	}
+
+	@Override
+	@Transactional
+	public void addLanguage(Language theLanguage) {
+		filmStoreDAO.addLanguage(theLanguage);
+		
+	}
+
+	@Override
+	@Transactional
+	public boolean isLanguageNameAlreadyExisted(String theLanguageName) {
+		return filmStoreDAO.isLanguageNameAlreadyExisted(theLanguageName);
+	}
+
+	@Override
+	@Transactional
+	public void deleteLanguage(Integer theLanguageId) {
+		filmStoreDAO.deleteLanguage(theLanguageId);		
 	}
 
 }

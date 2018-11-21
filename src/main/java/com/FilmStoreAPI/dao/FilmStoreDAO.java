@@ -7,6 +7,7 @@ import com.FilmStoreAPI.Entity.CustomerData.City;
 import com.FilmStoreAPI.Entity.CustomerData.Country;
 import com.FilmStoreAPI.Entity.Inventory.Actor;
 import com.FilmStoreAPI.Entity.Inventory.Category;
+import com.FilmStoreAPI.Entity.Inventory.Language;
 
 public interface FilmStoreDAO 
 {
@@ -62,5 +63,15 @@ public interface FilmStoreDAO
 	void addCategory(Category theCategory);
 
 	void deleteCategory(Integer theCategoryId);
+
+	List<Language> getLanguages();
+
+	Language getLanguage(Integer theLanguageId);
+
+	void addLanguage(Language theLanguage);
+
+	boolean isLanguageNameAlreadyExisted(String theLanguageName);
+
+	void deleteLanguage(Integer theLanguageId);
 
 }

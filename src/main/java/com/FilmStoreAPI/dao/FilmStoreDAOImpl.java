@@ -15,6 +15,7 @@ import com.FilmStoreAPI.Entity.CustomerData.City;
 import com.FilmStoreAPI.Entity.CustomerData.Country;
 import com.FilmStoreAPI.Entity.Inventory.Actor;
 import com.FilmStoreAPI.Entity.Inventory.Category;
+import com.FilmStoreAPI.Entity.Inventory.Language;
 
 @Repository
 public class FilmStoreDAOImpl implements FilmStoreDAO 
@@ -243,6 +244,50 @@ public class FilmStoreDAOImpl implements FilmStoreDAO
 		Session currentSession = sessionFactory.getCurrentSession();
 		Query theQuery = currentSession.createQuery("delete from Category where categoryId = :aCategoryId");
 		theQuery.setParameter("aCategoryId", theCategoryId);		
+		theQuery.executeUpdate();
+	}
+
+	@Override
+	public List<Language> getLanguages() {
+		Session currentSession = sessionFactory.getCurrentSession();
+		Query<Language> theQuery = currentSession.createQuery("from Language", Language.class);
+		List<Language> languages = theQuery.getResultList();
+		return languages;
+	}
+
+	@Override
+	public Language getLanguage(Integer theLanguageId) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		Language theLanguage = currentSession.get(Language.class, theLanguageId);
+		return theLanguage;
+	}
+
+	@Override
+	public void addLanguage(Language theLanguage) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		theLanguage.setLanguageLastUpdate(new Date());
+		currentSession.saveOrUpdate(theLanguage);	
+	}
+
+	@Override
+	public boolean isLanguageNameAlreadyExisted(String theLanguageName) {
+		Long count = new Long(0);
+		Session currentSession = sessionFactory.getCurrentSession();
+		count =  (Long)currentSession.createQuery("select count(*) from Language where languageName = :aLanguageName").
+									  setParameter("aLanguageName", theLanguageName).
+									  uniqueResult();
+		if(count > 0)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void deleteLanguage(Integer theLanguageId) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		Query theQuery = currentSession.createQuery("delete from Language where languageId = :aLanguageId");
+		theQuery.setParameter("aLanguageId", theLanguageId);		
 		theQuery.executeUpdate();
 	}
 

@@ -17,6 +17,7 @@ import com.FilmStoreAPI.Entity.CustomerData.City;
 import com.FilmStoreAPI.Entity.CustomerData.Country;
 import com.FilmStoreAPI.Entity.Inventory.Actor;
 import com.FilmStoreAPI.Entity.Inventory.Category;
+import com.FilmStoreAPI.Entity.Inventory.Language;
 import com.FilmStoreAPI.error.EntityAlreadyExistedException;
 import com.FilmStoreAPI.error.EntityNotFoundException;
 import com.FilmStoreAPI.service.FilmStoreService;
@@ -318,6 +319,57 @@ public class FilmStoreRestController
 	{
 		filmStoreService.deleteCategory(theCategoryId);
 		return "Deleted Categeory id:"+theCategoryId;
+	}
+	
+	//add mapping for GET /languages - get all the language
+	@GetMapping("/languages")
+	public List<Language> getLanguages()
+	{			
+		return filmStoreService.getLanguages();
+	}
+	
+	//add mapping for GET  /categories/{theCategoriesId} - get a single category
+	@GetMapping("/languages/{theLanguageId}")
+	public Language getLanguage(@PathVariable Integer theLanguageId)
+	{		
+		Language theLanguage = filmStoreService.getLanguage(theLanguageId);
+		if(theLanguage == null)
+		{
+			 throw new EntityNotFoundException("No Language with ID: "+theLanguageId);
+		}
+		return theLanguage;
+	}
+	
+	//add mapping for POST/languages - create a new language
+	@PostMapping("/languages")
+	public Language addLanguage(@RequestBody Language theLanguage)
+	{
+		if(isLanguageNameAlreadyExisted(theLanguage.getLanguageName()))
+		{
+			throw new EntityAlreadyExistedException("Language "+theLanguage.getLanguageName()+" already existed");
+		}
+		filmStoreService.addLanguage(theLanguage);
+		return theLanguage;
+	}
+
+	private boolean isLanguageNameAlreadyExisted(String theLanguageName) {
+		return filmStoreService.isLanguageNameAlreadyExisted(theLanguageName);
+	}
+	
+	//add mapping for PUT/languages - update a language
+	@PutMapping("/languages")
+	public Language updateLanguage(@RequestBody Language theLanguage)
+	{
+		filmStoreService.addLanguage(theLanguage);
+		return theLanguage;
+	}
+	
+	//add the mapping for DELETE /language/{theLanguageId} - delete a Language
+	@DeleteMapping("/languages/{theLanguageId}")
+	public String deleteLanguage(@PathVariable Integer theLanguageId)
+	{
+		filmStoreService.deleteLanguage(theLanguageId);
+		return "Deleted Language id:"+theLanguageId;
 	}
 	
 }
