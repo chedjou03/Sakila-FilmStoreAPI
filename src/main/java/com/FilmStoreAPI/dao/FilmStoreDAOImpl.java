@@ -15,6 +15,7 @@ import com.FilmStoreAPI.Entity.CustomerData.City;
 import com.FilmStoreAPI.Entity.CustomerData.Country;
 import com.FilmStoreAPI.Entity.Inventory.Actor;
 import com.FilmStoreAPI.Entity.Inventory.Category;
+import com.FilmStoreAPI.Entity.Inventory.Film;
 import com.FilmStoreAPI.Entity.Inventory.Language;
 
 @Repository
@@ -288,6 +289,51 @@ public class FilmStoreDAOImpl implements FilmStoreDAO
 		Session currentSession = sessionFactory.getCurrentSession();
 		Query theQuery = currentSession.createQuery("delete from Language where languageId = :aLanguageId");
 		theQuery.setParameter("aLanguageId", theLanguageId);		
+		theQuery.executeUpdate();
+	}
+
+	@Override
+	public List<Film> getFlims() {
+		Session currentSession = sessionFactory.getCurrentSession();
+		Query<Film> theQuery = currentSession.createQuery("from Film", Film.class);
+		List<Film> films = theQuery.getResultList();
+		return films;
+	}
+
+	@Override
+	public Film getFilm(Integer theFilmId) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		Film theFilm = currentSession.get(Film.class, theFilmId);
+		return theFilm;
+	}
+
+	@Override
+	public void addFilm(Film theFilm) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		theFilm.setFilmLastUpdate(new Date());
+		currentSession.saveOrUpdate(theFilm);	
+	}
+
+	@Override
+	public boolean isFilmWithTitleAlreadyReleaseThisYear(String theFilmTitle, Integer theFilmReleaseYear) {
+		Long count = new Long(0);
+		Session currentSession = sessionFactory.getCurrentSession();
+		count =  (Long)currentSession.createQuery("select count(*) from Film where filmTitle = :aFilmTitle and filmReleaseYear = :aFilmReleaseYear").
+									  setParameter("aFilmTitle", theFilmTitle).
+									  setParameter("aFilmReleaseYear", theFilmReleaseYear).
+									  uniqueResult();
+		if(count > 0)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void deleteFilm(Integer theFilmId) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		Query theQuery = currentSession.createQuery("delete from Film where filmId = :aFilmId");
+		theQuery.setParameter("aFilmId", theFilmId);		
 		theQuery.executeUpdate();
 	}
 

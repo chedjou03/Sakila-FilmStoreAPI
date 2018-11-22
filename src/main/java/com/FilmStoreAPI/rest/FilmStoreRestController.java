@@ -17,6 +17,7 @@ import com.FilmStoreAPI.Entity.CustomerData.City;
 import com.FilmStoreAPI.Entity.CustomerData.Country;
 import com.FilmStoreAPI.Entity.Inventory.Actor;
 import com.FilmStoreAPI.Entity.Inventory.Category;
+import com.FilmStoreAPI.Entity.Inventory.Film;
 import com.FilmStoreAPI.Entity.Inventory.Language;
 import com.FilmStoreAPI.error.EntityAlreadyExistedException;
 import com.FilmStoreAPI.error.EntityNotFoundException;
@@ -372,4 +373,55 @@ public class FilmStoreRestController
 		return "Deleted Language id:"+theLanguageId;
 	}
 	
+	//add mapping for GET /films - get all the films
+	@GetMapping("/films")
+	public List<Film> getFlims()
+	{			
+		return filmStoreService.getFlims();
+	}
+	
+	//add mapping for GET  /films/{theFilmId} - get a single film
+	@GetMapping("/films/{theFilmId}")
+	public Film getFilm(@PathVariable Integer theFilmId)
+	{		
+		Film theFilm = filmStoreService.getFilm(theFilmId);
+		if(theFilm == null)
+		{
+			throw new EntityNotFoundException("No Film with ID: "+theFilmId);
+		}
+		return theFilm;
+	}
+	
+	//add mapping for POST/films - create a new film
+	@PostMapping("/films")
+	public Film addFilm(@RequestBody Film theFilm)
+	{
+		if(isFilmWithTitleAlreadyReleaseThisYear(theFilm.getFilmTitle(),theFilm.getFilmReleaseYear()))
+		{
+			throw new EntityAlreadyExistedException("Film with title "+theFilm.getFilmTitle()+" was already released in "+theFilm.getFilmReleaseYear());
+		}
+		filmStoreService.addFilm(theFilm);
+		return theFilm;
+	}
+
+	private boolean isFilmWithTitleAlreadyReleaseThisYear(String theFilmTitle, Integer theFilmReleaseYear) 
+	{
+		return filmStoreService.isFilmWithTitleAlreadyReleaseThisYear(theFilmTitle,theFilmReleaseYear);
+	}
+	
+	//add mapping for PUT/films - update a film
+	@PutMapping("/films")
+	public Film updateFilm(@RequestBody Film theFilm)
+	{
+		filmStoreService.addFilm(theFilm);
+		return theFilm;
+	}
+	
+	//add the mapping for DELETE /films/{theFilmId} - delete a film
+	@DeleteMapping("/films/{theFilmId}")
+	public String deleteFilm(@PathVariable Integer theFilmId)
+	{
+		filmStoreService.deleteFilm(theFilmId);
+		return "Deleted Film id:"+theFilmId;
+	}
 }

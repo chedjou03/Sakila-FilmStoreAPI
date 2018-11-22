@@ -33,6 +33,7 @@ public class EntityRestExceptionHandler
 		
 		return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
 	}
+	
 	@ExceptionHandler
 	public ResponseEntity<EntityErrorResponse> handleGenericException(Exception exc)
 	{
