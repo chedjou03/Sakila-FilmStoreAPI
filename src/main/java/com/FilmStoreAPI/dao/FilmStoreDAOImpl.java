@@ -29,7 +29,7 @@ public class FilmStoreDAOImpl implements FilmStoreDAO
 	public List<Country> getCountries() {
 		
 		Session currentSession = sessionFactory.getCurrentSession();
-		Query<Country> theQuery = currentSession.createQuery("from Country order by countryName", Country.class);
+		Query<Country> theQuery = currentSession.createQuery("from Country order by countryName ", Country.class);
 		List<Country> countries = theQuery.getResultList();
 		return countries;
 		
