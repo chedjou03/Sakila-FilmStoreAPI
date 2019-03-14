@@ -1,16 +1,20 @@
 package com.FilmStoreAPI.Entity.Inventory;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -72,6 +76,9 @@ public class Film implements java.io.Serializable
 	
 	@Column(name = "last_update")
 	private Date filmLastUpdate;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.film", cascade=CascadeType.ALL)
+	private List<FilmCategory> filmCategories = new ArrayList<FilmCategory>();
 
 	
 	
@@ -201,6 +208,14 @@ public class Film implements java.io.Serializable
 
 	public void setFilmLastUpdate(Date filmLastUpdate) {
 		this.filmLastUpdate = filmLastUpdate;
+	}
+	
+	public List<FilmCategory> getFilmCategories() {
+		return filmCategories;
+	}
+
+	public void setFilmCategories(List<FilmCategory> filmCategories) {
+		this.filmCategories = filmCategories;
 	}
 
 	@Override

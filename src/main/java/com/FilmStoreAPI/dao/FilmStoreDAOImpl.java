@@ -303,7 +303,12 @@ public class FilmStoreDAOImpl implements FilmStoreDAO
 	@Override
 	public Film getFilm(Integer theFilmId) {
 		Session currentSession = sessionFactory.getCurrentSession();
+		System.out.println(">>>>>>>");
 		Film theFilm = currentSession.get(Film.class, theFilmId);
+		System.out.println("=======");
+		System.out.println(theFilm);
+		System.out.println("*******");
+		System.out.println(theFilm.getFilmCategories().size());
 		return theFilm;
 	}
 
